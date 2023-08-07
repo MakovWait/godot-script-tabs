@@ -18,3 +18,5 @@ About
 -----------
 
 Godot4 editor plugin. 
+
+More plugins <a href="https://github.com/MakovWait/godot4-plugins">godot4-plugins</a>
