@@ -14,6 +14,13 @@ or plug with <a href="https://github.com/imjp94/gd-plug">gd-plug</a>:
 plug("MakovWait/godot-script-tabs")
 ```
 
+Shortcuts
+---------
+- Switch to next tab: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>]</kbd>
+- Switch to previous tab: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>[</kbd>
+- Switch to tab by index: <kbd>Cmd</kbd> + <kbd>0-9</kbd>
+
+
 About
 -----------
 

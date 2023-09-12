@@ -41,6 +41,11 @@ func _enter_tree() -> void:
 		if HIDE_NATIVE_LIST:
 			_scripts_item_list.get_parent().visible = false
 		_scripts_item_list.property_list_changed.connect(_on_item_list_property_list_changed)
+
+		if _scripts_item_list.get_selected_items().size() > 0:
+			_last_tab_selected = _scripts_item_list.get_selected_items()[0] 
+		else:
+			_last_tab_selected = -1
 	_update_tabs()
 
 
@@ -123,6 +128,25 @@ func _simulate_item_clicked(tab_idx, mouse_idx):
 				_scripts_item_list.get_local_mouse_position(),
 				mouse_idx
 			)
+
+
+func _unhandled_key_input(event):
+	if not _scripts_item_list:
+		return
+		
+	event = event as InputEventKey
+
+	if Input.is_key_pressed(KEY_META):
+		if Input.is_key_pressed(KEY_SHIFT):
+			if not event.is_pressed() and event.keycode == KEY_BRACKETRIGHT:
+				var tabIdx = (max(0,_last_tab_selected) + 1) % _scripts_item_list.item_count
+				_on_tab_selected(tabIdx)
+			elif not event.is_pressed() and event.keycode == KEY_BRACKETLEFT:
+				var tabIdx = ((max(0,_last_tab_selected) - 1) + _scripts_item_list.item_count) % _scripts_item_list.item_count
+				_on_tab_selected(tabIdx)
+		elif not event.is_pressed() and event.keycode >= KEY_0 and event.keycode <= KEY_9:
+			var tabIdx = event.keycode - 49
+			_on_tab_selected(tabIdx)
 
 
 func _update_tabs():
