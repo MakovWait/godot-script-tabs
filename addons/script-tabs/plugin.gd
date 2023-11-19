@@ -98,8 +98,10 @@ func _on_tab_selected(tab_idx):
 	var item_idx = _find_list_item_idx_by_tab_idx(tab_idx)
 	if item_idx != -1:
 		if not _scripts_item_list.is_selected(item_idx):
-			_scripts_item_list.select(item_idx)
-			_scripts_item_list.item_selected.emit(item_idx)
+			var select_scripts_item = func():
+				_scripts_item_list.select(item_idx)
+				_scripts_item_list.item_selected.emit(item_idx)
+			select_scripts_item.call_deferred()
 
 
 func _on_tab_rmb(tab_idx):
