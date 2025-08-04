@@ -72,13 +72,13 @@ func _on_tab_hovered(idx):
 
 
 func _on_scripts_tab_bar_gui_input(event: InputEvent):
-	if event is InputEventMouseMotion:
-		var tab_control = _scripts_tab_container.get_tab_control(_last_tab_hovered)
-		var path = ''
-		if tab_control:
-			path = tab_control.get("metadata/_edit_res_path")
-		_scripts_tab_bar.tooltip_text = '' if path == null else path
 	if _last_tab_hovered == -1: return
+
+	if event is InputEventMouseMotion:
+		var script_editor = get_editor_interface().get_script_editor()
+		var script_hover_res = script_editor.get_open_scripts()[_last_tab_hovered].resource_path
+		_scripts_tab_bar.set_tab_tooltip(_last_tab_hovered, script_hover_res)
+
 	if event is InputEventMouseButton:
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_MIDDLE:
 			_simulate_item_clicked(_last_tab_hovered, MOUSE_BUTTON_MIDDLE)
