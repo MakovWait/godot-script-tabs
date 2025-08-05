@@ -75,9 +75,19 @@ func _on_scripts_tab_bar_gui_input(event: InputEvent):
 	if _last_tab_hovered == -1: return
 
 	if event is InputEventMouseMotion:
-		var script_editor = get_editor_interface().get_script_editor()
-		var script_hover_res = script_editor.get_open_scripts()[_last_tab_hovered].resource_path
-		_scripts_tab_bar.set_tab_tooltip(_last_tab_hovered, script_hover_res)
+		var script_editor := get_editor_interface().get_script_editor()
+		var script_open_array := script_editor.get_open_scripts()
+		var script_open_counter: int = 0
+		var result := [script_open_array[0].resource_path] if _last_tab_hovered == 0 else []
+		if result.size() < 1:
+			for i in range(0, _last_tab_hovered + 1):
+				var tab_title: String = _scripts_tab_bar.get_tab_title(i)
+				if tab_title.ends_with(".gd"):
+					result.append(script_open_array[script_open_counter].resource_path)
+					script_open_counter += 1
+				else:
+					result.append(tab_title)
+		_scripts_tab_bar.set_tab_tooltip(_last_tab_hovered, result[_last_tab_hovered])
 
 	if event is InputEventMouseButton:
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_MIDDLE:
