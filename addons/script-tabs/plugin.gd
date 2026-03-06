@@ -35,7 +35,6 @@ func _enter_tree() -> void:
 		_scripts_tab_bar.tab_selected.connect(_on_tab_selected)
 		_scripts_tab_bar.tab_hovered.connect(_on_tab_hovered)
 		_scripts_tab_bar.mouse_exited.connect(_on_tab_bar_mouse_exited)
-		_scripts_tab_bar.active_tab_rearranged.connect(_on_active_tab_rearranged)
 		_scripts_tab_bar.gui_input.connect(_on_scripts_tab_bar_gui_input)
 	if _scripts_item_list:
 		if HIDE_NATIVE_LIST:
@@ -60,7 +59,6 @@ func _exit_tree() -> void:
 		_scripts_tab_bar.tab_rmb_clicked.disconnect(_on_tab_rmb)
 		_scripts_tab_bar.tab_selected.disconnect(_on_tab_selected)
 		_scripts_tab_bar.tab_hovered.disconnect(_on_tab_hovered)
-		_scripts_tab_bar.active_tab_rearranged.disconnect(_on_active_tab_rearranged)
 
 
 func _on_tab_bar_mouse_exited():
@@ -73,7 +71,6 @@ func _on_tab_hovered(idx):
 
 func _on_scripts_tab_bar_gui_input(event: InputEvent):
 	if _last_tab_hovered == -1: return
-
 	if event is InputEventMouseMotion:
 		var script_editor := get_editor_interface().get_script_editor()
 		var script_open_array := script_editor.get_open_scripts()
@@ -88,19 +85,6 @@ func _on_scripts_tab_bar_gui_input(event: InputEvent):
 				else:
 					result.append(tab_title)
 		_scripts_tab_bar.set_tab_tooltip(_last_tab_hovered, result[_last_tab_hovered])
-
-	if event is InputEventMouseButton:
-		if event.is_pressed() and event.button_index == MOUSE_BUTTON_MIDDLE:
-			_simulate_item_clicked(_last_tab_hovered, MOUSE_BUTTON_MIDDLE)
-
-
-func _on_active_tab_rearranged(_idx_to):
-	var control = _scripts_tab_container.get_tab_control(_last_tab_selected)
-	if not control:
-		return
-	_scripts_tab_container.move_child(control, _idx_to)
-	_scripts_tab_container.current_tab = _scripts_tab_container.current_tab
-	_trigger_script_editor_update_script_names()
 
 
 func _on_tab_selected(tab_idx):
